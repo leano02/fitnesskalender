@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fitnesskalender</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light;
+--bg:#f4f6f4;--card:#fff;--tx:#16201b;--mu:#566259;--bd:#cfd7d1;--ac:#0f766e;--acx:#fff;--wn:#fef3c7;
+--c0:#99f6e4;--t0:#042f2e;--c1:#fde68a;--t1:#3b2f00;--c2:#bbf7d0;--t2:#052e16;--c3:#4ade80;--t3:#052e16;--c4:#15803d;--t4:#fff;--cn:#fecaca;--tn:#7f1d1d;--cp:#e5e7eb;--tp:#374151}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1512;--card:#18211c;--tx:#e8efe9;--mu:#a3b1a8;--bd:#34413a;--ac:#2dd4bf;--acx:#042f2e;--wn:#422006;--c0:#115e59;--t0:#fff;--c1:#854d0e;--t1:#fff;--c2:#166534;--t2:#fff;--c3:#22c55e;--t3:#052e16;--c4:#86efac;--t4:#052e16;--cn:#7f1d1d;--tn:#fff;--cp:#374151;--tp:#e5e7eb}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1512;--card:#18211c;--tx:#e8efe9;--mu:#a3b1a8;--bd:#34413a;--ac:#2dd4bf;--acx:#042f2e;--wn:#422006;--c0:#115e59;--t0:#fff;--c1:#854d0e;--t1:#fff;--c2:#166534;--t2:#fff;--c3:#22c55e;--t3:#052e16;--c4:#86efac;--t4:#052e16;--cn:#7f1d1d;--tn:#fff;--cp:#374151;--tp:#e5e7eb}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:1000px;margin:0 auto;padding:12px}
+header{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+h1{font-size:1.3rem;margin:0}h2{font-size:1.1rem;margin:0 0 8px}h3{font-size:.9rem;margin:0 0 4px}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px}
+nav a{padding:.5rem .8rem;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+nav a[aria-current]{background:var(--ac);color:var(--acx);border-color:var(--ac);font-weight:600}
+nav a.hi:not([aria-current]){border-color:var(--ac);border-width:2px;font-weight:600}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.b{padding:.5rem .9rem;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);font:inherit;cursor:pointer;min-height:44px}
+.b.p{background:var(--ac);color:var(--acx);border-color:var(--ac);font-weight:600}
+.k{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+.warn{background:var(--wn)}
+.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:12px}.kg .k{margin:0}
+.v{font-size:1.8rem;font-weight:700;line-height:1.2}.mu{color:var(--mu);font-size:.9rem}
+.pr{height:10px;background:var(--bd);border-radius:6px;overflow:hidden;margin-top:6px}.pr i{display:block;height:100%;background:var(--ac)}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.tb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}.tb h2{margin:0;flex:1;min-width:120px}
+.g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.g .h{text-align:center;font-size:.8rem;color:var(--mu)}
+.c{aspect-ratio:1;min-height:44px;border:2px dashed var(--bd);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font:inherit;line-height:1.15;cursor:pointer;background:var(--card);color:var(--tx);padding:0}
+.c .s{font-weight:700;font-size:.9rem}.c .d{font-size:.8rem}
+.c.q0{background:var(--c0);color:var(--t0)}.c.q1{background:var(--c1);color:var(--t1)}.c.q2{background:var(--c2);color:var(--t2)}.c.q3{background:var(--c3);color:var(--t3)}.c.q4{background:var(--c4);color:var(--t4)}
+.c.n{background:var(--cn);color:var(--tn)}.c.np{background:var(--cp);color:var(--tp)}
+.c[class*=" q"],.c.n,.c.np{border-style:solid;border-color:transparent}
+.c.pl::after{content:"";width:14px;height:3px;border-radius:2px;background:currentColor;opacity:.55;margin-top:2px}
+.c.t{border-style:solid;border-color:var(--tx)}
+.yg{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.yg .g{gap:2px}.yg .c{min-height:0;border-radius:3px;border-width:1px}.yg .d{display:none}.yg .s{font-size:.55rem}.yg .c.pl::after{display:none}
+.bars{display:flex;align-items:flex-end;gap:6px;height:170px}
+.bars div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:.75rem;height:100%}
+.bars i{width:100%;background:var(--ac);border-radius:4px 4px 0 0;min-height:2px}
+.q{display:grid;grid-template-columns:110px 1fr 70px;gap:8px;align-items:center;margin:4px 0}.q .pr{margin:0}
+.ls{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.ls .b{width:100%;text-align:left;display:flex;flex-wrap:wrap;gap:4px 12px}
+dialog{border:1px solid var(--bd);border-radius:16px;background:var(--card);color:var(--tx);width:min(480px,94vw);padding:16px}
+dialog::backdrop{background:#0008}
+fieldset{border:1px solid var(--bd);border-radius:10px;margin:8px 0;padding:6px 8px}
+label.r{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border:1px solid var(--bd);border-radius:8px;margin:2px;min-height:40px;cursor:pointer}
+label{display:block;margin:8px 0}
+input,select,textarea{font:inherit;padding:.5rem;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);width:100%}
+input[type=radio],input[type=checkbox]{width:auto}
+.scroll{overflow-x:auto}
+</style></head>
+<body><div class="w">
+<header><h1>🏋️ Fitnesskalender</h1><button class="b" data-a="th" aria-label="Hell/Dunkel umschalten">◐ Design</button></header>
+<nav aria-label="Hauptnavigation" id="nav"></nav>
+<main id="app"></main>
+<p class="mu">Daten werden nur lokal in deinem Browser gespeichert.</p>
+<dialog id="dlg" aria-label="Eintrag bearbeiten"></dialog>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const def={start:'',days:[0,2,4],wk:3,mo:12,yr:150,theme:''};
+let S={e:{},c:{...def}},D='',fid='',armed='',iom='';
+const F={s:'ja',t:'',q:'',x:''};
+function load(){try{const r=JSON.parse(localStorage.getItem('fk1')||'null');if(r){S.e=r.e||{};S.c={...def,...r.c}}}catch(e){}}
+function save(){try{localStorage.setItem('fk1',JSON.stringify(S))}catch(e){}}
+const pad=n=>String(n).padStart(2,'0'),key=(y,m,d)=>y+'-'+pad(m+1)+'-'+pad(d),kd=d=>key(d.getFullYear(),d.getMonth(),d.getDate());
+const today=new Date(),TK=kd(today),V={y:today.getFullYear(),m:today.getMonth(),mode:'m'};
+const parse=k=>{const[a,b,c]=k.split('-').map(Number);return new Date(a,b-1,c)};
+const dow=d=>(d.getDay()+6)%7;
+const diff=(a,b)=>Math.round((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(a.getFullYear(),a.getMonth(),a.getDate()))/864e5);
+const MN=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],DN=['Mo','Di','Mi','Do','Fr','Sa','So'];
+const QN=['Schwach','Okay','Gut','Sehr gut'],TY=['Krafttraining','Cardio','Mobility','Kurs','Sonstiges'];
+const ST={ja:'✓ Training',nein:'✗ Nicht trainiert',np:'– Nicht geplant'};
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=k=>{const d=parse(k);return DN[dow(d)]+', '+d.getDate()+'. '+MN[d.getMonth()]+' '+d.getFullYear()};
+const short=k=>{const d=parse(k);return d.getDate()+'.'+(d.getMonth()+1)+'.'};
+const f1=n=>(Math.round(n*10)/10).toString().replace('.',','),hm=m=>Math.floor(m/60)+' Std. '+m%60+' Min.';
+const ja=(a,b)=>Object.entries(S.e).filter(([k,e])=>e.s=='ja'&&k>=a&&k<=b);
+const mk=(y,m)=>[key(y,m,1),key(y,m,31)];
+const avgQ=a=>{const q=a.map(([,e])=>e.q).filter(Boolean);return q.length?q.reduce((x,y)=>x+y)/q.length:null};
+const pr=(v,max,l)=>`<div class="pr" role="progressbar" aria-label="${l}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${Math.min(v,max)}"><i style="width:${max?Math.min(100,v/max*100):0}%"></i></div>`;
+function weekRange(d){const s=new Date(d.getFullYear(),d.getMonth(),d.getDate()-dow(d)),e=new Date(s.getFullYear(),s.getMonth(),s.getDate()+6);return[kd(s),kd(e)]}
+function weekStreak(){let n=0,d=new Date(today);for(let i=0;i<110;i++){const[a,b]=weekRange(d);if(ja(a,b).length>=S.c.wk)n++;else if(i>0)break;d=new Date(d.getFullYear(),d.getMonth(),d.getDate()-7)}return n}
+function dayStreak(){let n=0,d=new Date(today);if(!(S.e[TK]&&S.e[TK].s=='ja'))d.setDate(d.getDate()-1);while(S.e[kd(d)]&&S.e[kd(d)].s=='ja'){n++;d.setDate(d.getDate()-1)}return n}
+function stats(){const y=today.getFullYear(),j1=new Date(y,0,1);let st=S.c.start?parse(S.c.start):j1;if(st<j1)st=j1;if(st>today)st=today;
+let n=0,sum=0,rated=0,qn=[0,0,0,0],min=0,pl=0,pd=0,best=0,run=0,perM=Array(12).fill(0);const days=diff(st,today)+1;
+for(let i=0;i<days;i++){const d=new Date(st.getFullYear(),st.getMonth(),st.getDate()+i),e=S.e[kd(d)],pf=S.c.days.includes(dow(d));if(pf)pl++;
+if(e&&e.s=='ja'){n++;if(pf)pd++;if(e.q){sum+=e.q;rated++;qn[e.q-1]++}min+=+e.d||0;perM[d.getMonth()]++;run++;best=Math.max(best,run)}else run=0}
+const dy=(Date.UTC(y+1,0,1)-Date.UTC(y,0,1))/864e5,gone=diff(j1,today)+1,left=dy-gone,rate=n/(days/7),need=left>0?Math.max(0,S.c.yr-n)/(left/7):0;
+return{days,n,pl,pd,avg:rated?sum/rated:null,rated,qn,min,best,perM,dy,gone,left,rate,need,proj:n+rate*left/7}}
+function cell(k,d){const e=S.e[k],pf=S.c.days.includes(dow(parse(k)));let c='c',sy='',l='nicht dokumentiert';
+if(e){if(e.s=='ja'){c+=' q'+(e.q||0);sy='✓'+(e.q||'');l='Training'+(e.q?', Qualität '+QN[e.q-1]:'')}else if(e.s=='nein'){c+=' n';sy='✗';l='nicht trainiert'}else{c+=' np';sy='–';l='nicht geplant'}}
+if(pf)c+=' pl';if(k==TK)c+=' t';
+return`<button class="${c}" data-k="${k}" aria-label="${fmt(k)}: ${l}${pf?', geplanter Trainingstag':''}" title="${fmt(k)}: ${l}"><span class="d">${d}</span><span class="s">${sy}</span></button>`}
+function monthGrid(y,m,mini){const dim=new Date(y,m+1,0).getDate();let h='<div class="g">'+(mini?'':DN.map(d=>`<div class="h">${d}</div>`).join(''))+'<div></div>'.repeat(dow(new Date(y,m,1)));
+for(let d=1;d<=dim;d++)h+=cell(key(y,m,d),d);return h+'</div>'}
+const yearGrid=y=>'<div class="yg">'+MN.map((n,m)=>`<div class="m"><h3>${n}</h3>${monthGrid(y,m,1)}</div>`).join('')+'</div>';
+const desc=e=>({ja:'Training'+(e.q?' · '+QN[e.q-1]:'')+(e.d?' · '+e.d+' Min.':'')+(e.t?' · '+e.t:''),nein:'Nicht trainiert',np:'Nicht geplant'}[e.s]+(e.n?' — „'+e.n+'“':''));
+function pKal(){const y=today.getFullYear(),mj=ja(...mk(y,today.getMonth())),e=S.e[TK],g=S.c.mo,q=avgQ(mj),miss=[];
+for(let i=0;i<7;i++){const d=new Date(y,today.getMonth(),today.getDate()-i),k=kd(d);if(S.c.days.includes(dow(d))&&!S.e[k])miss.push(k)}
+let h=`<section class="k"><h2>Heute · ${fmt(TK)}</h2><p>${e?esc(desc(e)):'Noch kein Eintrag für heute.'}</p><button class="b p" data-k="${TK}">${e?'Eintrag bearbeiten':'Training eintragen'}</button></section>`;
+if(miss.length)h+=`<div class="k warn" role="status"><b>Erinnerung:</b> Für geplante Trainingstage fehlt noch ein Eintrag. ${miss.map(k=>`<button class="b" data-k="${k}">${short(k)} eintragen</button>`).join(' ')}</div>`;
+if(!Object.keys(S.e).length)h+=`<div class="k"><h2>Noch keine Einträge</h2><p>Trage dein erstes Training ein oder sieh dir die App mit Beispieldaten an.</p><button class="b" data-a="demo">Demodaten laden</button></div>`;
+const left=g-mj.length;
+h+=`<div class="kg"><div class="k"><div class="mu">Trainingstage im ${MN[today.getMonth()]}</div><div class="v">${mj.length} / ${g}</div>${pr(mj.length,g,'Monatsziel')}</div>
+<div class="k"><div class="mu">Serie</div><div class="v">${weekStreak()} Wochen</div><div class="mu">mit erreichtem Wochenziel (${S.c.wk}×) · ${dayStreak()} Tage in Folge</div></div>
+<div class="k"><div class="mu">Ø Qualität (Monat)</div><div class="v">${q?f1(q)+' / 4':'–'}</div><div class="mu">${q?QN[Math.round(q)-1]:'noch keine Bewertung'}</div></div>
+<div class="k"><div class="mu">Motivation</div><p style="margin:4px 0 0">${left<=0?'Monatsziel erreicht – stark. Alles Weitere ist Bonus.':'Noch '+left+' Einheit'+(left>1?'en':'')+' bis zum Monatsziel. Du schaffst das in deinem Tempo.'}</p></div></div>`;
+h+=`<section class="k"><div class="tb"><button class="b" id="pv" data-a="pv" aria-label="Zurück">‹</button><h2 aria-live="polite">${V.mode=='m'?MN[V.m]+' '+V.y:'Jahr '+V.y}</h2><button class="b" id="nx" data-a="nx" aria-label="Weiter">›</button><button class="b" id="td" data-a="td">Heute</button><button class="b" id="md" data-a="md">${V.mode=='m'?'Jahresansicht':'Monatsansicht'}</button></div>
+${V.mode=='m'?monthGrid(V.y,V.m):yearGrid(V.y)}
+<p class="mu">✓1–4 Training (Qualität) · ✗ nicht trainiert · – nicht geplant · gestrichelt = nicht dokumentiert · ▬ geplanter Trainingstag</p></section>`;return h}
+function pStat(){const s=stats(),y=today.getFullYear(),m=today.getMonth(),cur=ja(...mk(y,m)),pm=m?[y,m-1]:[y-1,11],prev=ja(...mk(...pm)),mx=Math.max(1,...s.perM);
+const ks=Object.keys(S.e).filter(k=>k.startsWith(y+'-')&&S.e[k].s=='ja').sort(),MS=[1,10,25,50,75,100,150,200,250,300],nx=MS.find(x=>x>ks.length);
+const qa=avgQ(cur),qb=avgQ(prev);
+return`<section class="k"><h2>Was bedeuten die Prozentzahlen?</h2>
+<p><b>Alle vergangenen Tage:</b> <span class="v">${f1(s.n/s.days*100)} %</span><br><span class="mu">${s.n} Trainingstage von ${s.days} vergangenen Kalendertagen seit ${short(S.c.start&&parse(S.c.start)>new Date(y,0,1)?S.c.start:y+'-01-01')} (inkl. heute).</span></p>
+<p><b>Nur geplante Trainingstage:</b> <span class="v">${s.pl?f1(s.pd/s.pl*100)+' %':'–'}</span><br><span class="mu">${s.pd} Trainings an ${s.pl} geplanten Tagen (Wochentage laut Einstellungen).</span></p></section>
+<div class="kg"><div class="k"><div class="mu">Trainingseinheiten</div><div class="v">${s.n}</div><div class="mu">Jahresziel: ${S.c.yr}</div>${pr(s.n,S.c.yr,'Jahresziel')}</div>
+<div class="k"><div class="mu">Ø Qualität</div><div class="v">${s.avg?f1(s.avg)+' / 4':'–'}</div><div class="mu">${s.rated} bewertete Einheiten</div></div>
+<div class="k"><div class="mu">Gesamte Trainingszeit</div><div class="v">${hm(s.min)}</div></div>
+<div class="k"><div class="mu">Längste Serie</div><div class="v">${s.best} Tage</div><div class="mu">in Folge trainiert</div></div>
+<div class="k"><div class="mu">Verbleibend im Jahr</div><div class="v">${s.left} Tage</div><div class="mu">≈ ${Math.ceil(s.left/7)} Wochen · ≈ ${f1(s.left/(s.dy/12))} Monate</div></div>
+<div class="k"><div class="mu">Jahr bereits vergangen</div><div class="v">${f1(s.gone/s.dy*100)} %</div>${pr(s.gone,s.dy,'Vergangenes Jahr')}<div class="mu">${s.dy} Tage im Jahr ${y}</div></div></div>
+<section class="k"><h2>Rate: bisher vs. nötig</h2><p>Bisher: <b>${f1(s.rate)}</b> Einheiten pro Woche · Nötig für ${S.c.yr} Einheiten: <b>${f1(s.need)}</b> pro Woche · Prognose Jahresende: <b>≈ ${Math.round(s.proj)}</b></p>
+<p class="mu">${s.n>=S.c.yr?'Jahresziel erreicht.':s.left<=0?'Das Jahr ist vorbei.':s.rate>=s.need?'Du liegst auf Kurs für dein Jahresziel.':'Aktuell etwas unter der nötigen Rate – kleine Schritte holen das auf.'}</p></section>
+<section class="k"><h2>Qualitätsverteilung</h2>${QN.map((l,i)=>`<div class="q"><span>${i+1} · ${l}</span>${pr(s.qn[i],Math.max(1,s.rated),l)}<span>${s.qn[i]} (${s.rated?Math.round(s.qn[i]/s.rated*100):0} %)</span></div>`).join('')}</section>
+<section class="k"><h2>Einheiten pro Monat</h2><div class="bars" role="img" aria-label="Balkendiagramm: Einheiten pro Monat">${s.perM.map((n,i)=>`<div><span>${n}</span><i style="height:${n/mx*110}px"></i><span>${MN[i].slice(0,3)}</span></div>`).join('')}</div></section>
+<section class="k"><h2>Vergleich mit dem Vormonat</h2><p>${MN[m]} bisher: <b>${cur.length}</b> Einheiten${qa?' (Ø '+f1(qa)+')':''} · ${MN[pm[1]]}: <b>${prev.length}</b>${qb?' (Ø '+f1(qb)+')':''} · Unterschied: ${cur.length-prev.length>0?'+':''}${cur.length-prev.length}</p></section>
+<section class="k"><h2>Meilensteine</h2>${ks.length?'<ul>'+MS.filter(x=>x<=ks.length).map(x=>`<li>${x}. Training ${y} – ${short(ks[x-1])}</li>`).join('')+'</ul>':'<p class="mu">Noch keine Trainings in diesem Jahr.</p>'}${nx?`<p class="mu">Noch ${nx-ks.length} bis zum ${nx}. Training.</p>`:''}</section>
+<section class="k"><h2>Jahres-Heatmap ${y}</h2>${yearGrid(y)}</section>`}
+function pZiele(){const[wa,wb]=weekRange(today),y=today.getFullYear(),v={wk:ja(wa,wb).length,mo:ja(...mk(y,today.getMonth())).length,yr:ja(y+'-01-01',y+'-12-31').length},L={wk:'Wochenziel (Einheiten pro Woche)',mo:'Monatsziel (Einheiten pro Monat)',yr:'Jahresziel (Einheiten pro Jahr)'};
+return'<h2>Ziele</h2>'+['wk','mo','yr'].map(id=>`<div class="k"><label for="${id}">${L[id]}</label><input id="${id}" type="number" min="1" max="999" value="${S.c[id]}" data-c="${id}"><p class="mu">Aktuell: ${v[id]} von ${S.c[id]}</p>${pr(v[id],S.c[id],L[id])}</div>`).join('')+'<p class="mu">Bevorzugte Trainingstage stellst du unter „Einstellungen“ ein.</p>'}
+function hist(){const a=Object.entries(S.e).filter(([k,e])=>(F.s=='all'||e.s==F.s)&&(!F.t||e.t==F.t)&&(!F.q||(e.q||0)>=+F.q)&&(!F.x||(e.n||'').toLowerCase().includes(F.x.toLowerCase()))).sort((a,b)=>b[0].localeCompare(a[0]));
+if(!a.length)return'<p class="mu">Keine Einträge gefunden.</p>';
+return`<p class="mu">${a.length} Einträge · ${hm(a.reduce((s,[,e])=>s+(+e.d||0),0))}</p><ul class="ls">`+a.map(([k,e])=>`<li><button class="b" data-k="${k}"><b>${fmt(k)}</b><span>${ST[e.s]}${e.q?' · '+e.q+' ('+QN[e.q-1]+')':''}${e.d?' · '+e.d+' Min.':''}${e.t?' · '+esc(e.t):''}</span>${e.n?`<em>${esc(e.n)}</em>`:''}</button></li>`).join('')+'</ul>'}
+function pVer(){const o=(v,l,c)=>`<option value="${v}"${c==v?' selected':''}>${l}</option>`;
+return`<h2>Verlauf</h2><div class="k"><label>Suche in Notizen<input data-f="x" value="${esc(F.x)}"></label><label>Status<select data-f="s">${o('ja','Trainings',F.s)+o('nein','Nicht trainiert',F.s)+o('np','Nicht geplant',F.s)+o('all','Alle',F.s)}</select></label>
+<label>Art<select data-f="t">${o('','Alle',F.t)+TY.map(t=>o(t,t,F.t)).join('')}</select></label><label>Mindestqualität<select data-f="q">${o('','Beliebig',F.q)+QN.map((l,i)=>o(i+1,(i+1)+' · '+l,F.q)).join('')}</select></label></div><div id="list">${hist()}</div>`}
+function pSet(){const o=(v,l)=>`<option value="${v}"${S.c.theme==v?' selected':''}>${l}</option>`;
+return`<h2>Einstellungen</h2><section class="k"><label for="start">Startdatum für Statistiken (innerhalb des laufenden Jahres)</label><input id="start" type="date" data-c="start" value="${S.c.start}">
+<fieldset><legend>Bevorzugte Trainingstage</legend>${DN.map((l,i)=>`<label class="r"><input type="checkbox" data-pd="${i}"${S.c.days.includes(i)?' checked':''}>${l}</label>`).join('')}</fieldset>
+<label for="theme">Design</label><select id="theme" data-c="theme">${o('','Automatisch')+o('light','Hell')+o('dark','Dunkel')}</select><p class="mu">Zielwerte findest du unter „Ziele“.</p></section>
+<section class="k"><h2>Daten</h2><div class="row"><button class="b" data-a="ej">JSON exportieren</button><button class="b" data-a="ec">CSV exportieren</button><button class="b" data-a="im">Aus Textfeld importieren</button></div>
+<label>Export / Import (JSON oder CSV einfügen)<textarea id="io" rows="7"></textarea></label><p id="iom" class="mu" role="status">${esc(iom)}</p>
+<div class="row"><button class="b" data-a="demo">${armed=='demo'?'Wirklich überschreiben?':'Demodaten laden'}</button><button class="b" data-a="clr">${armed=='clr'?'Wirklich alles löschen?':'Alle Daten löschen'}</button></div></section>`}
+const NAV=[['kalender','Kalender'],['statistiken','Statistiken & Jahresfortschritt'],['ziele','Ziele'],['verlauf','Verlauf'],['einstellungen','Einstellungen']],P={kalender:pKal,statistiken:pStat,ziele:pZiele,verlauf:pVer,einstellungen:pSet};
+function apply(){S.c.theme?document.documentElement.dataset.theme=S.c.theme:document.documentElement.removeAttribute('data-theme')}
+function render(){const h=location.hash.slice(1),p=P[h]?h:'kalender';$('#nav').innerHTML=NAV.map(([id,l])=>`<a href="#${id}"${id==p?' aria-current="page"':''}${id=='statistiken'?' class="hi"':''}>${l}</a>`).join('');
+$('#app').innerHTML=P[p]();if(fid){const x=document.getElementById(fid);if(x)x.focus();fid=''}}
+function openDay(k){D=k;const e=S.e[k]||{s:'ja'},r=(n,v,l,c)=>`<label class="r"><input type="radio" name="${n}" value="${v}"${c?' checked':''}>${l}</label>`;
+$('#dlg').innerHTML=`<h2>${fmt(k)}</h2><fieldset><legend>Im Fitnessstudio?</legend>${[['ja','Ja'],['nein','Nein'],['np','Nicht geplant']].map(([v,l])=>r('s',v,l,e.s==v)).join('')}</fieldset>
+<fieldset><legend>Trainingsqualität</legend>${r('q','','Keine Angabe',!e.q)+QN.map((l,i)=>r('q',i+1,(i+1)+' · '+l,e.q==i+1)).join('')}</fieldset>
+<label>Dauer in Minuten (optional)<input type="number" id="dd" min="0" max="600" value="${e.d||''}"></label>
+<label>Art<select id="dt"><option value="">–</option>${TY.map(t=>`<option${e.t==t?' selected':''}>${t}</option>`).join('')}</select></label>
+<label>Notiz<input id="dn" maxlength="140" value="${esc(e.n)}" placeholder="z. B. Beine, wenig Energie, neuer Rekord"></label><p id="dm" class="mu" role="status"></p>
+<div class="row"><button class="b p" data-a="sv">Speichern</button><button class="b" data-a="cp">Vom letzten Mal übernehmen</button>${S.e[k]?'<button class="b" data-a="dl">Löschen</button>':''}<button class="b" data-a="cl">Abbrechen</button></div>`;$('#dlg').showModal()}
+function demo(){let x=11;const r=()=>(x=x*16807%2147483647)/2147483647,e={};
+for(let d=new Date(today.getFullYear(),0,1);kd(d)<TK;d.setDate(d.getDate()+1)){const pf=[0,2,4].includes(dow(d)),u=r();let o=null;
+if(pf?u<.82:u<.07){o={s:'ja',q:Math.max(1,Math.ceil(Math.pow(r(),.6)*4)),d:40+Math.floor(r()*10)*5,t:TY[Math.floor(r()*4)]};if(r()<.15)o.n=['Beine','wenig Energie','neuer Rekord','Rücken'][Math.floor(r()*4)]}else if(pf)o={s:'nein'};
+if(o)e[kd(d)]=o}S.e=e;S.c.days=[0,2,4]}
+function csvRow(l){const o=[];let c='',q=0;for(let i=0;i<l.length;i++){const ch=l[i];if(q){if(ch=='"'){if(l[i+1]=='"'){c+='"';i++}else q=0}else c+=ch}else if(ch=='"')q=1;else if(ch==';'){o.push(c);c=''}else c+=ch}o.push(c);return o}
+function imp(t){let ent={};t=t.trim();try{if(t[0]=='{'){const j=JSON.parse(t);ent=j.entries||{};if(j.settings)S.c={...def,...j.settings}}else t.split(/\r?\n/).slice(1).forEach(l=>{const[k,s,q,d,ty,n]=csvRow(l);if(k)ent[k]={s,q:+q||0,d:+d||0,t:ty,n}})}catch(e){return'Import fehlgeschlagen: Format nicht erkannt.'}
+let c=0;for(const[k,e]of Object.entries(ent)){if(!/^\d{4}-\d\d-\d\d$/.test(k)||!['ja','nein','np'].includes(e.s))continue;const o={s:e.s};if(e.q>=1&&e.q<=4)o.q=+e.q;if(e.d>0)o.d=+e.d;if(e.t)o.t=String(e.t);if(e.n)o.n=String(e.n).slice(0,140);S.e[k]=o;c++}save();apply();return c+' Einträge importiert.'}
+function nav(d){if(V.mode=='m'){V.m+=d;if(V.m<0){V.m=11;V.y--}if(V.m>11){V.m=0;V.y++}}else V.y+=d}
+const A={pv:()=>{fid='pv';nav(-1)},nx:()=>{fid='nx';nav(1)},md:()=>{fid='md';V.mode=V.mode=='m'?'y':'m'},td:()=>{fid='td';V.y=today.getFullYear();V.m=today.getMonth()},
+th:()=>{const dk=S.c.theme?S.c.theme=='dark':matchMedia('(prefers-color-scheme: dark)').matches;S.c.theme=dk?'light':'dark';save();apply()},
+sv:()=>{const q=n=>document.querySelector(n),s=q('input[name=s]:checked').value,o={s};if(s=='ja'){const z=q('input[name=q]:checked');if(z&&z.value)o.q=+z.value;const d=+q('#dd').value;if(d>0)o.d=d;if(q('#dt').value)o.t=q('#dt').value}const n=q('#dn').value.trim();if(n)o.n=n;S.e[D]=o;save();q('#dlg').close()},
+cp:()=>{const p=Object.keys(S.e).filter(x=>x<D&&S.e[x].s=='ja').sort().pop();if(!p){$('#dm').textContent='Kein früheres Training gefunden.';return 1}const o=S.e[p];$('input[name=s][value=ja]').checked=true;$('#dd').value=o.d||'';$('#dt').value=o.t||'';$('#dn').value=o.n||'';$('#dm').textContent='Übernommen von '+fmt(p)+'.';return 1},
+dl:()=>{delete S.e[D];save();$('#dlg').close()},cl:()=>{$('#dlg').close()},
+ej:()=>{$('#io').value=JSON.stringify({version:1,entries:S.e,settings:S.c},null,1);return 1},
+ec:()=>{$('#io').value=['datum;status;qualitaet;minuten;art;notiz'].concat(Object.keys(S.e).sort().map(k=>{const e=S.e[k];return[k,e.s,e.q||'',e.d||'',e.t||'','"'+(e.n||'').replace(/"/g,'""')+'"'].join(';')})).join('\n');return 1},
+im:()=>{iom=imp($('#io').value)},
+demo:()=>{if(Object.keys(S.e).length&&armed!='demo'){armed='demo';return}demo();armed='';save();iom='Demodaten geladen.'},
+clr:()=>{if(armed!='clr'){armed='clr';return}S.e={};armed='';save();iom='Alle Einträge gelöscht.'}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-k],[data-a]');if(!b)return;const a=b.dataset.a;if(!a){openDay(b.dataset.k);return}
+if(a!='demo'&&a!='clr')armed='';if(A[a]&&A[a]()===1)return;render()});
+document.addEventListener('change',e=>{const t=e.target,c=t.dataset.c;if(c){S.c[c]=t.type=='number'?Math.max(1,+t.value||1):t.value;save();apply();fid=t.id;render()}
+else if(t.dataset.pd!==undefined){S.c.days=[...document.querySelectorAll('[data-pd]:checked')].map(x=>+x.dataset.pd);save();render()}});
+document.addEventListener('input',e=>{const f=e.target.dataset.f;if(f){F[f]=e.target.value;$('#list').innerHTML=hist()}});
+load();apply();addEventListener('hashchange',()=>{armed='';iom='';render()});render();
+</script></body></html>
+
